@@ -32,7 +32,7 @@ public class TaskRepository(AppDbContext context):ITaskRepository
         return entity;
     }
 
-    public async Task<bool> UpdateAsync(int id, CreateTaskDto todo)
+    public async Task<bool> UpdateAsync(int id, UpdateTaskDto todo)
     {
         var entity = await context.Tasks.FirstOrDefaultAsync(x => x.Id == id);
         if (entity == null)
@@ -40,6 +40,7 @@ public class TaskRepository(AppDbContext context):ITaskRepository
         if (string.IsNullOrWhiteSpace(todo.Title))
             throw new NullReferenceException("عنوان نمیتواند خالی باشد");
         entity.Title = todo.Title;
+        entity.IsCompleted = true;
         await context.SaveChangesAsync();
         return true;
     }

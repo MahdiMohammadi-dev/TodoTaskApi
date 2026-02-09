@@ -30,7 +30,7 @@ namespace TodoTaskApi.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("CreateTask")]
         public async Task<IActionResult> Create(CreateTaskDto todo)
         {
             if (!ModelState.IsValid)
@@ -40,8 +40,8 @@ namespace TodoTaskApi.Controllers
             return Ok("تسک ایجاد شد");
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, CreateTaskDto todo)
+        [HttpPut("UpdateTask/{id}")]
+        public async Task<IActionResult> Update(int id, UpdateTaskDto todo)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -53,7 +53,7 @@ namespace TodoTaskApi.Controllers
             return Ok("تسک ویرایش شد");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteBy/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await repository.DeleteAsync(id);
