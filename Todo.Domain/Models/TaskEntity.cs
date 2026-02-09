@@ -1,13 +1,13 @@
 ﻿namespace Todo.Domain.Models;
 
-public class Todo
+public class TaskEntity
 {
     public int Id { get; set; }
     public string Title { get; set; }
     public DateTime CreationDate { get; set; }
     public bool IsCompleted { get; set; }
 
-    public Todo()
+    public TaskEntity()
     {
         CreationDate = DateTime.Now;
     }
