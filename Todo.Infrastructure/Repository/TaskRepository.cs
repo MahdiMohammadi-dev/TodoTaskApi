@@ -9,7 +9,7 @@ public class TaskRepository(AppDbContext context):ITaskRepository
 {
     public async Task<List<TaskEntity>> GetAllAsync()
     {
-        return await context.Tasks.ToListAsync();
+        return await context.Tasks.Where(x=>x.IsCompleted!=true).ToListAsync();
     }
 
     public async Task<TaskEntity?> GetByIdAsync(int id)
@@ -29,15 +29,28 @@ public class TaskRepository(AppDbContext context):ITaskRepository
 
         context.Tasks.Add(entity);
         await context.SaveChangesAsync();
+        return entity;
     }
 
-    public Task<bool> UpdateAsync(int id, CreateTaskDto todo)
+    public async Task<bool> UpdateAsync(int id, CreateTaskDto todo)
     {
-        throw new NotImplementedException();
+        var entity = await context.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+        if (entity == null)
+            return false;
+        if (string.IsNullOrWhiteSpace(todo.Title))
+            throw new NullReferenceException("عنوان نمیتواند خالی باشد");
+        entity.Title = todo.Title;
+        await context.SaveChangesAsync();
+        return true;
     }
 
-    public Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var entity = await context.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+        if (entity == null)
+            return false;
+        entity.IsCompleted = true;
+       await context.SaveChangesAsync();
+       return true;
     }
 }
